@@ -101,9 +101,9 @@ and apply cybersecurity concepts in real-world applications.
 
 ## 👤 Author
 
-**Paul Getachew**
-- GitHub: [@yourusername](https://github.com/yourusername)
-- Email: your@email.com
+**Robel Solomon**
+- GitHub: [@Robi-sol-dev](https://github.com/Robi-sol-dev)
+- Email: solomonrobel80@email.com
 
 ---
 
