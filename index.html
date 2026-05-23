@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CyberShield Toolkit</title>
+<link href="https://fonts.googleapis.com/css2?family=Share+Tech+Mono&family=Syne:wght@400;600;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<header class="header">
+  <div class="logo">CS</div>
+  <div class="header-text">
+    <h1>CyberShield Toolkit</h1>
+    <p>Cybersecurity Web Application — v0.1 prototype</p>
+  </div>
+  <div class="badge">● LIVE</div>
+</header>
+
+<nav class="nav">
+  <button class="nav-tab active" onclick="switchTab('checker', this)">01 / Strength Checker</button>
+  <button class="nav-tab" onclick="switchTab('generator', this)">02 / Password Generator</button>
+  <button class="nav-tab" onclick="switchTab('login', this)">03 / Login Security</button>
+</nav>
+
+<main class="main">
+
+  <!-- Panel 1: Password Strength Checker -->
+  <section class="panel active" id="panel-checker">
+    <p class="panel-title">// module_01</p>
+    <h2 class="panel-heading">Password Strength Checker</h2>
+
+    <div class="input-group">
+      <label class="input-label" for="pw-input">Enter password to analyze</label>
+      <div class="input-wrap">
+        <input type="password" id="pw-input" placeholder="Type your password..." oninput="checkPassword()" autocomplete="off" spellcheck="false">
+        <button class="toggle-vis" onclick="toggleVis()" id="vis-btn">SHOW</button>
+      </div>
+    </div>
+
+    <div class="strength-bar-wrap">
+      <div class="strength-label-row">
+        <span class="strength-label">Strength level</span>
+        <span class="strength-score" id="strength-text">—</span>
+      </div>
+      <div class="strength-bar">
+        <div class="strength-fill" id="strength-fill"></div>
+      </div>
+    </div>
+
+    <div class="criteria-grid">
+      <div class="criterion" id="crit-length">
+        <div class="crit-dot"></div>
+        <span>Min 8 characters</span>
+      </div>
+      <div class="criterion" id="crit-upper">
+        <div class="crit-dot"></div>
+        <span>Uppercase letter</span>
+      </div>
+      <div class="criterion" id="crit-lower">
+        <div class="crit-dot"></div>
+        <span>Lowercase letter</span>
+      </div>
+      <div class="criterion" id="crit-number">
+        <div class="crit-dot"></div>
+        <span>Number included</span>
+      </div>
+      <div class="criterion" id="crit-symbol">
+        <div class="crit-dot"></div>
+        <span>Special symbol (!@#...)</span>
+      </div>
+      <div class="criterion" id="crit-long">
+        <div class="crit-dot"></div>
+        <span>Length 12+ (recommended)</span>
+      </div>
+    </div>
+
+    <div class="suggestion-box" id="suggestion-box">
+      <div class="suggestion-label">▸ Suggested stronger password</div>
+      <div class="suggestion-text" id="suggestion-text"></div>
+    </div>
+  </section>
+
+  <!-- Panel 2: Password Generator -->
+  <section class="panel" id="panel-generator">
+    <p class="panel-title">// module_02</p>
+    <h2 class="panel-heading">Secure Password Generator</h2>
+
+    <label class="input-label">Password length</label>
+    <div class="length-row">
+      <input type="range" min="8" max="64" value="16" id="len-slider" oninput="updateLen(this.value)">
+      <span class="len-val" id="len-display">16</span>
+    </div>
+
+    <label class="input-label" style="margin-bottom:0.75rem;">Character types</label>
+    <div class="gen-options">
+      <label class="checkbox-opt">
+        <input type="checkbox" id="opt-upper" checked onchange="generatePassword()">
+        <span class="checkbox-box">✓</span>
+        Uppercase (A–Z)
+      </label>
+      <label class="checkbox-opt">
+        <input type="checkbox" id="opt-lower" checked onchange="generatePassword()">
+        <span class="checkbox-box">✓</span>
+        Lowercase (a–z)
+      </label>
+      <label class="checkbox-opt">
+        <input type="checkbox" id="opt-num" checked onchange="generatePassword()">
+        <span class="checkbox-box">✓</span>
+        Numbers (0–9)
+      </label>
+      <label class="checkbox-opt">
+        <input type="checkbox" id="opt-sym" checked onchange="generatePassword()">
+        <span class="checkbox-box">✓</span>
+        Symbols (!@#$...)
+      </label>
+    </div>
+
+    <div class="gen-output">
+      <span id="gen-result">Click generate to create a password</span>
+      <button class="copy-btn" onclick="copyPassword()" id="copy-btn">COPY</button>
+    </div>
+
+    <div class="btn-row">
+      <button class="btn btn-primary" onclick="generatePassword()">Generate Password</button>
+    </div>
+
+    <div class="info-panel" style="margin-top:1.5rem;">
+      <div class="info-title">// entropy info</div>
+      <div class="info-item" id="entropy-info">Generate a password to see entropy details.</div>
+    </div>
+  </section>
+
+  <!-- Panel 3: Login Security Tester -->
+  <section class="panel" id="panel-login">
+    <p class="panel-title">// module_03</p>
+    <h2 class="panel-heading">Login Security Tester</h2>
+
+    <div style="display:flex; gap:2rem; flex-wrap:wrap; align-items:flex-start;">
+      <div class="login-card" style="flex:1; min-width:280px;">
+
+        <div class="attempt-counter">
+          <span class="attempt-label">LOGIN ATTEMPTS</span>
+          <div class="attempt-dots" id="attempt-dots">
+            <div class="attempt-dot" id="dot-1"></div>
+            <div class="attempt-dot" id="dot-2"></div>
+            <div class="attempt-dot" id="dot-3"></div>
+            <div class="attempt-dot" id="dot-4"></div>
+            <div class="attempt-dot" id="dot-5"></div>
+          </div>
+          <span class="attempt-val" id="attempt-val">0 / 5</span>
+        </div>
+
+        <div class="input-group">
+          <label class="input-label" for="login-user">Username</label>
+          <input type="text" id="login-user" placeholder="admin">
+        </div>
+
+        <div class="input-group">
+          <label class="input-label" for="login-pass">Password</label>
+          <input type="password" id="login-pass" placeholder="••••••••">
+        </div>
+
+        <div class="login-status" id="login-status"></div>
+
+        <div class="locked-overlay" id="locked-overlay">
+          <div class="lock-icon">🔒</div>
+          <div class="lock-title">Account Locked</div>
+          <div class="lock-desc">Too many failed attempts.<br>Brute-force protection activated.</div>
+          <div class="countdown" id="countdown">30</div>
+          <div class="lock-desc">seconds remaining</div>
+        </div>
+
+        <div class="btn-row">
+          <button class="btn btn-primary" onclick="attemptLogin()" id="login-btn">Login</button>
+          <button class="btn btn-danger" onclick="resetLogin()">Reset</button>
+        </div>
+
+        <div style="margin-top:1rem; font-family:var(--mono); font-size:0.65rem; color:var(--muted); letter-spacing:0.05em; line-height:1.8;">
+          HINT: try <span style="color:var(--accent)">admin / shield123</span>
+        </div>
+      </div>
+
+      <div style="flex:1; min-width:260px;">
+        <div class="info-panel" style="margin-top:0;">
+          <div class="info-title">// security mechanisms</div>
+          <div class="info-item">
+            <span>Max attempts:</span> 5 before lockout<br>
+            <span>Lockout duration:</span> 30 seconds<br>
+            <span>Protection type:</span> Brute-force detection<br>
+            <span>Counter:</span> Resets on success<br>
+          </div>
+        </div>
+
+        <div class="info-panel" style="border-left-color: var(--accent2); margin-top:1rem;">
+          <div class="info-title" style="color:var(--accent2);">// attack log</div>
+          <div id="attack-log" style="font-family:var(--mono); font-size:0.68rem; color:var(--muted); line-height:2; max-height:160px; overflow-y:auto;">
+            Waiting for login attempts...
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<footer class="footer">
+  <span>CyberShield Toolkit — Built by Robel Solomon</span>
+  <span>Haramaya University · CS Year 1</span>
+</footer>
+
+<script src="script.js"></script>
+</body>
+</html>
